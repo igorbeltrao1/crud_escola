@@ -17,7 +17,7 @@ public record DadosCadastroProfessor(
 		 @NotNull 
 		 String telefone,
 	
-		 @NotBlank
+		
 		 Disciplinas disciplina,
 		
 		 @NotBlank
