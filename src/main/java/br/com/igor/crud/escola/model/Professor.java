@@ -1,5 +1,6 @@
 package br.com.igor.crud.escola.model;
 
+import br.com.igor.crud.escola.dto.DadosAtualizacaoProfessor;
 import br.com.igor.crud.escola.dto.DadosCadastroProfessor;
 import br.com.igor.crud.escola.enumerate.Disciplinas;
 import jakarta.persistence.Column;
@@ -10,8 +11,20 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
-@Entity
+
+@Table(name = "professor")
+@Entity(name = "Professor")
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
 public class Professor {
 
 	@Column(name = "nome")
@@ -45,9 +58,7 @@ public class Professor {
 	@Embedded
 	private Endereco endereco;
 
-	public Professor() {
 
-	}
 
 	public Professor(DadosCadastroProfessor dadosProfessor) {
 		this.nome = dadosProfessor.nome();
@@ -60,76 +71,18 @@ public class Professor {
 		this.endereco = new Endereco(dadosProfessor.endereco());
 	}
 
-	public Endereco getEndereco() {
-		return endereco;
-	}
-
-	public void setEndereco(Endereco endereco) {
-		this.endereco = endereco;
+	public void atualizarCadastroProfessor(@Valid DadosAtualizacaoProfessor dados) {
+		if(dados.nome() != null) {
+			this.nome = dados.nome();
+		}
+		if(dados.email() != null) {
+			this.email = dados.email();	
+		}
+		if(dados.endereco() != null) {
+			this.endereco.atualizarEndereco(dados.endereco());
+		}
+		
+		
 	}
 	
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public String getCpf() {
-		return cpf;
-	}
-
-	public void setCpf(String cpf) {
-		this.cpf = cpf;
-	}
-
-	public String getTelefone() {
-		return telefone;
-	}
-
-	public void setTelefone(String telefone) {
-		this.telefone = telefone;
-	}
-
-	public Disciplinas getDisciplina() {
-		return disciplina;
-	}
-
-	public void setDisciplina(Disciplinas disciplina) {
-		this.disciplina = disciplina;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public boolean isFilhos() {
-		return filhos;
-	}
-
-	public void setFilhos(boolean filhos) {
-		this.filhos = filhos;
-	}
-
-	public int getQtdeFilhos() {
-		return qtdeFilhos;
-	}
-
-	public void setQtdeFilhos(int qtdeFilhos) {
-		this.qtdeFilhos = qtdeFilhos;
-	}
-
 }
