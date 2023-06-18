@@ -2,6 +2,7 @@ package br.com.igor.crud.escola.model;
 
 
 
+import br.com.igor.crud.escola.dto.DadosAtualizacaoAluno;
 import br.com.igor.crud.escola.dto.DadosCadastroAluno;
 import jakarta.persistence.Column;
 import jakarta.persistence.Embedded;
@@ -10,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.Valid;
 import lombok.Data;
 
 @Data
@@ -52,4 +54,19 @@ public class Aluno {
 		this.endereco = new Endereco(dados.endereco());
 	}
 	
+	public void atualizacaoCadastroAluno(@Valid DadosAtualizacaoAluno dados) {
+		if(dados.nome() != null) {
+			this.nome = dados.nome();
+		}
+		if(dados.responsavel() != null){
+			this.responsavel = dados.responsavel();
+		}
+		if(dados.email() != null) {
+			this.email = dados.email();
+		}
+		if(dados.endereco() != null) {
+			this.endereco.atualizarEndereco(dados.endereco());
+		}
+	
+	}
 }
