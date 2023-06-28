@@ -1,4 +1,4 @@
-package br.com.igor.crud.escola.infra;
+package br.com.igor.crud.escola.exception;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
