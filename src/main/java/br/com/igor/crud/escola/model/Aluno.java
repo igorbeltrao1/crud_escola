@@ -18,6 +18,8 @@ import lombok.Data;
 @Table(name = "tb_alunos")
 @Entity(name = "Aluno")
 public class Aluno {
+	
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,5 +1,7 @@
 package br.com.igor.crud.escola.controler;
 
+import java.util.logging.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,15 +28,17 @@ import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/alunos")
-public class AlunoControler {
+public class AlunoController {
 
+	private static final Logger logger = Logger.getLogger(AlunoController.class.getName());
 	@Autowired
 	private AlunoRepository repository;
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroAluno dados, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity cadastrarAluno(@RequestBody @Valid DadosCadastroAluno dados, UriComponentsBuilder uriBuilder) {
 
+		logger.info(" >>>> [AlunoController] - cadastrar");
 		var aluno = new Aluno(dados);
 
 		repository.save(aluno);
@@ -46,8 +50,8 @@ public class AlunoControler {
 	}
 
 	@GetMapping
-	public ResponseEntity <Page<DadosListagemAluno>> listar(@PageableDefault(size = 10, sort = { "nome" }) Pageable paginacao) {
-		
+	public ResponseEntity <Page<DadosListagemAluno>> listarAluno (@PageableDefault(size = 10, sort = { "nome" }) Pageable paginacao) {
+		logger.info(" >>>> [AlunoController] - listarAluno");
 		var aluno = repository.findAll(paginacao).map(DadosListagemAluno::new);
 		
 		return ResponseEntity.ok(aluno);
@@ -57,6 +61,7 @@ public class AlunoControler {
 	@PutMapping
 	@Transactional
 	public ResponseEntity atualizarAluno (DadosAtualizacaoAluno dados) {
+		logger.info(" >>>> [AlunoController] - atualizarAluno");
 		var aluno = repository.getReferenceById(dados.id());
 		aluno.atualizacaoCadastroAluno(dados);
 		return ResponseEntity.ok(new DadosDetalhamentoAluno(aluno));
@@ -65,6 +70,7 @@ public class AlunoControler {
 	@DeleteMapping("/{id}")
 	@Transactional
 	public ResponseEntity excluirAluno (@PathVariable Long id) {
+		logger.info(" >>>> [AlunoController] - excluirAluno");
 		repository.deleteById(id);
 		
 		return ResponseEntity.ok().build();

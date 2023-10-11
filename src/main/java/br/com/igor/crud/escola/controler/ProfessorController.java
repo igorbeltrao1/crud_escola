@@ -1,5 +1,7 @@
 package br.com.igor.crud.escola.controler;
 
+import java.util.logging.Logger;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,14 +29,15 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/professor")
 public class ProfessorController {
+	private static final Logger logger = Logger.getLogger(ProfessorController.class.getName());
 
 	@Autowired
 	private ProfessorRepository repository;
 
 	@PostMapping
 	@Transactional
-	public ResponseEntity cadastrar(@RequestBody @Valid DadosCadastroProfessor dados, UriComponentsBuilder uriBuilder) {
-
+	public ResponseEntity cadastrarProfessor(@RequestBody @Valid DadosCadastroProfessor dados, UriComponentsBuilder uriBuilder) {
+		logger.info(" >>>> [ProfessorController] - cadastrarProfessor");
 		var professor = new Professor(dados);
 
 		repository.save(professor);
@@ -46,8 +49,9 @@ public class ProfessorController {
 	}
 
 	@GetMapping
-	public ResponseEntity<Page<DadosListagemProfessor>> listar(
+	public ResponseEntity<Page<DadosListagemProfessor>> listarProfessor(
 			@PageableDefault(size = 10, sort = { "nome" }) Pageable paginacao) {
+		logger.info(" >>>> [ProfessorController] - listarProfessor");
 
 		var page = repository.findAll(paginacao).map(DadosListagemProfessor::new);
 
@@ -56,8 +60,8 @@ public class ProfessorController {
 	
 	@PutMapping
 	@Transactional
-	public ResponseEntity atualizar(@RequestBody @Valid DadosAtualizacaoProfessor dados) {
-		
+	public ResponseEntity atualizarProfessor(@RequestBody @Valid DadosAtualizacaoProfessor dados) {
+		logger.info(" >>>> [ProfessorController] - atualizarProfessor");
 		var professor = repository.getReferenceById(dados.id());
 		professor.atualizarCadastroProfessor(dados);
 		
@@ -67,6 +71,7 @@ public class ProfessorController {
 	@DeleteMapping("/{id}")
 	@Transactional
 	public ResponseEntity deletarProfessor(@PathVariable Long id) {
+		logger.info(" >>>> [ProfessorController] - deletarProfessor");
 		repository.deleteById(id);
 		
 		return ResponseEntity.noContent().build();
